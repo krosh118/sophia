@@ -179,45 +179,56 @@ public class inicioSesion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
         final String codigo = jTextField1.getText().trim();
         final String pass = jPasswordField1.getText().trim();
-        
         final Container panel = this.getContentPane();
         
-        Timer timer;
-        
-        timer = new Timer(1500, new ActionListener (){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                
-                // Aquí el código que queramos ejecutar.
-                try {
-                    Connection con = Conexion.getConection();
-                    Statement estado = con.createStatement();
-                    ResultSet resultado = estado.executeQuery("Select * from empleado where codigo = " + codigo + " and pass = '" + pass + "';");
-                    if(resultado.next()){
-                        // Encontró al usuario
-                        JOptionPane.showMessageDialog(null, "Bienvenido " + (String)resultado.getObject("nombres"));
-                    }else{
-                        // No encontró al usuario
-                        JOptionPane.showMessageDialog(null, "No se encontró el usuario");
-                        setContentPane(panel);
-                        revalidate();
+        try{
+            int numero = Integer.parseInt(codigo);
+            Timer timer;
+            timer = new Timer(1500, new ActionListener (){
+                @Override
+                public void actionPerformed(ActionEvent e){
+
+                    // Aquí el código que queramos ejecutar.
+                    try {
+                        Connection con = Conexion.getConection();
+                        Statement estado = con.createStatement();
+                        ResultSet resultado = estado.executeQuery("Select * from empleado where codigo = " + codigo + " and pass = '" + pass + "';");
+                        if(resultado.next()){
+                            // Encontró al usuario
+                            JOptionPane.showMessageDialog(null, "Bienvenido " + (String)resultado.getObject("nombres"));
+                        }else{
+                            // No encontró al usuario
+                            JOptionPane.showMessageDialog(null, "No se encontró el usuario");
+                            setContentPane(panel);
+                            revalidate();
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(inicioSesion.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } catch (SQLException ex) {
-                    Logger.getLogger(inicioSesion.class.getName()).log(Level.SEVERE, null, ex);
+
                 }
-                
             }
+                    );
+
+
+
+            this.setContentPane(new panelGif());
+            this.revalidate();
+            timer.setRepeats(false);
+            timer.start();
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(null, "Debe ingresar un código numérico");
+            jTextField1.requestFocus();
         }
-                );
         
         
         
-        this.setContentPane(new panelGif());
-        this.revalidate();
-        timer.setRepeats(false);
-        timer.start();
+        
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jPasswordField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField1KeyReleased
