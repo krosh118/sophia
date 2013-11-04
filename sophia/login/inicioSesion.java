@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import panelInicial.pantallaInicio;
 import sophia.Conexion;
 
 /**
@@ -198,7 +199,9 @@ public class inicioSesion extends javax.swing.JFrame {
                         ResultSet resultado = estado.executeQuery("Select * from empleado where codigo = " + codigo + " and pass = '" + pass + "';");
                         if(resultado.next()){
                             // Encontró al usuario
-                            JOptionPane.showMessageDialog(null, "Bienvenido " + (String)resultado.getObject("nombres"));
+                            //JOptionPane.showMessageDialog(null, "Bienvenido " + (String)resultado.getObject("nombres"));
+                            new pantallaInicio();
+                            dispose();
                         }else{
                             // No encontró al usuario
                             JOptionPane.showMessageDialog(null, "No se encontró el usuario");
